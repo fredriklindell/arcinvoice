@@ -1,26 +1,26 @@
 import moment from 'moment'
 
-export default function (
-   { name,
-      address,
-      phone,
-      email,
-      dueDate,
-      date,
-      id,
-      notes,
-      subTotal,
-      type,
-      vat,
-      total,
-      items,
-      status,
-      totalAmountReceived,
-      balanceDue,
-      company,
-   }) {
-    const today = new Date();
-return `
+export default function(
+  { name,
+    address,
+    phone,
+    email,
+    dueDate,
+    date,
+    id,
+    notes,
+    subTotal,
+    type,
+    vat,
+    total,
+    items,
+    status,
+    totalAmountReceived,
+    balanceDue,
+    company,
+  }) {
+  const today = new Date();
+  return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,17 +159,16 @@ img {
     <th style="text-align: right; font-size: 9px">Amount</th>
   </tr>
 
-  ${
-   items.map((item) => (
- `  <tr>
+  ${items.map((item) => (
+    `  <tr>
     <td style="font-size: 9px">${item.itemName}</td>
     <td style="font-size: 9px">${item.quantity}</td>
     <td style="font-size: 9px">${item.unitPrice}</td>
     <td style="font-size: 9px">${item.discount}</td>
     <td style="text-align: right; font-size: 9px">${(item.quantity * item.unitPrice) - (item.quantity * item.unitPrice) * item.discount / 100}</td>
   </tr>`
-   ))
-  }
+  ))
+    }
 
 
 </table>
@@ -215,5 +214,5 @@ img {
 </div>
 </body>
 </html>`
-;
+    ;
 };

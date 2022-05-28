@@ -1,26 +1,26 @@
 import moment from 'moment'
 
-export default function (
-   { name,
-      address,
-      phone,
-      email,
-      dueDate,
-      date,
-      id,
-      notes,
-      subTotal,
-      type,
-      vat,
-      total,
-      items,
-      status,
-      totalAmountReceived,
-      balanceDue,
-      company,
-   }) {
-    const today = new Date();
-return `<!DOCTYPE html>
+export default function(
+  { name,
+    address,
+    phone,
+    email,
+    dueDate,
+    date,
+    id,
+    notes,
+    subTotal,
+    type,
+    vat,
+    total,
+    items,
+    status,
+    totalAmountReceived,
+    balanceDue,
+    company,
+  }) {
+  const today = new Date();
+  return `<!DOCTYPE html>
 <html>
 <head>
 <style>
@@ -199,5 +199,5 @@ img {
 </body>
 </html>
 `
-;
+    ;
 };

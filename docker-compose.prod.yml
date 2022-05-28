@@ -1,32 +1,48 @@
 version: '3.1'
 services:
-  client:
-    container_name: client
-    image: client-prod
+  arcinvoice-client:
+    container_name: arcinvoice-client
+    image: arcinvoice-client
     build:
       dockerfile: ./client/Dockerfile
-      target: production
+        #      target: production
+      args:
+        - REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID}
+        - REACT_APP_API=${REACT_APP_API}
+        - REACT_APP_URL=${REACT_APP_URL}
     ports:
       - '80:80'
+    environment:
+      - REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID}
+      - REACT_APP_API=${REACT_APP_API}
+      - REACT_APP_URL=${REACT_APP_URL}
     depends_on:
-      - server
-      - mongo
+      - arcinvoice-server
+        #      - mongo
     links:
-      - server
-      - mongo
-  server:
-    container_name: server
-    image: server-prod
+      - arcinvoice-server
+        #      - mongo
+  arcinvoice-server:
+    container_name: arcinvoice-server
+    image: arcinvoice-server
     build:
       dockerfile: ./server/Dockerfile
     ports:
       - '5000:5000'
-    depends_on:
-      - mongo
-    links:
-      - mongo
-  mongo:
-    image: mongo
-    container_name: MONGODB
-    ports:
-      - '27017'
+    environment:
+      - DB_URL=${DB_URL}
+      - PORT=${SERVER_PORT}
+      - SECRET=${SECRET}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+        #    depends_on:
+        #      - mongo
+        #    links:
+        #      - mongo
+        #  mongo:
+        #    image: mongo
+        #    container_name: MONGODB
+        #    ports:
+        #      - '27017'
