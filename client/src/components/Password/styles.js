@@ -1,24 +1,28 @@
-import { makeStyles } from '@material-ui/core/styles';
-
-export default makeStyles((theme) => ({
+const styles = {
   paper: {
-    marginTop: theme.spacing(0),
+    mt: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: theme.spacing(4),
+    p: 4,
   },
   root: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
+      m: 1,
     },
   },
 
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    mt: 3,
   },
   submit: {
-    margin: theme.spacing(2, 0, 2),
+    // margin: theme.spacing(2, 0, 2),
+    ml: 2,
+    mr: 2,
+    mt: 0,
+    mb: 0,
   },
-}));
+};
+
+export default styles;

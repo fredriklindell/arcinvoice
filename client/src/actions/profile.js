@@ -12,7 +12,8 @@ export const getProfile = (id) => async (dispatch) => {
 
   } catch (error) {
     console.log(error.response);
-  } };
+  }
+};
 
 export const getProfiles = () => async (dispatch) => {
   try {
@@ -23,29 +24,42 @@ export const getProfiles = () => async (dispatch) => {
 
   } catch (error) {
     console.log(error);
-  } };
+  }
+};
 
 
-export const getProfilesByUser =(searchQuery) => async (dispatch) => {
+export const getProfileByUser = (searchQuery) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING })
-    const { data: { data } } = await api.fetchProfilesByUser(searchQuery)
+    const { data: { data } } = await api.fetchProfileByUser(searchQuery)
     dispatch({ type: FETCH_PROFILE_BY_USER, payload: data });
- 
+
     dispatch({ type: END_LOADING })
   } catch (error) {
     console.log(error.response)
-    
+
   }
 }
 
+export const getProfilesByUser = (searchQuery) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING })
+    const { data: { data } } = await api.fetchProfilesByUser(searchQuery)
+    dispatch({ type: FETCH_PROFILES_BY_USER, payload: data });
+
+    dispatch({ type: END_LOADING })
+  } catch (error) {
+    console.log(error.response)
+
+  }
+}
 
 export const getProfilesBySearch = (searchQuery) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data: { data } } = await api.fetchProfilesBySearch(searchQuery);
 
-    dispatch({ type: FETCH_PROFILES_BY_USER, payload: { data } });
+    dispatch({ type: FETCH_PROFILES_BY_USER, payload: data });
     dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);
@@ -81,7 +95,7 @@ export const updateProfile = (id, form, openSnackbar) => async (dispatch) => {
 
 export const deleteProfile = (id) => async (dispatch) => {
   try {
-   await api.deleteProfile(id);
+    await api.deleteProfile(id);
 
     dispatch({ type: DELETE_PROFILE, payload: id });
   } catch (error) {

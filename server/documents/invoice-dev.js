@@ -57,11 +57,16 @@ export default function(
       color: rgb(78, 78, 78);
     }
 
+    h4 {
+      padding: 0;
+    }
+
     .header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       padding: 10px 5px;
+      background-color: #f2f2f2;
     }
 
     .details {
@@ -69,7 +74,6 @@ export default function(
       flex-direction: row;
       justify-content: space-between;
       padding: 10px 0px 15px 0px;
-      line-height: 10px;
       font-size: 12px;
       margin-top: 20px;
       margin-bottom: 20px;
@@ -80,7 +84,6 @@ export default function(
       align-items: center;
       flex-direction: column;
       justify-content: space-between;
-      line-height: 10px;
       font-size: 12px;
     }
 
@@ -98,7 +101,6 @@ export default function(
       color: gray;
       letter-spacing: 2px;
       font-size: 8px;
-      line-height: 5px;
     }
 
     .summary {
@@ -130,18 +132,18 @@ export default function(
       <div class="address">
         <div>
           <p class="title">From:</p>
-          <h4 style="font-size: 9px; line-height: 5px">CAFEBABE AB</h4>
-          <p style="font-size: 9px; line-height: 5px">contact@cafebabe.se</p>
-          <p style="font-size: 9px; line-height: 5px">+46 702 89 62 82</p>
-          <p style="font-size: 9px; line-height: 5px">Siguldagatan 4, 521 40 Falköping</p>
+          <h4 style="font-size: 9px;">CAFEBABE AB</h4>
+          <p style="font-size: 9px;">contact@cafebabe.se</p>
+          <p style="font-size: 9px;">+46 702 89 62 82</p>
+          <p style="font-size: 9px;">Siguldagatan 4, 521 40 Falköping</p>
         </div>
 
         <div>
           <p class="title">Bill to:</p>
-          <h4 style="font-size: 9px; line-height: 5px">Hyllie Idrotts skadeklinik AB</h4>
-          <p style="font-size: 9px; line-height: 5px">contact@cafebabe.se</p>
-          <p style="font-size: 9px; line-height: 5px"></p>
-          <p style="font-size: 9px; line-height: 5px">Bollspelsvägen 3, 216 25 Malmö</p>
+          <h4 style="font-size: 9px;">Hyllie Idrotts skadeklinik AB</h4>
+          <p style="font-size: 9px;">contact@cafebabe.se</p>
+          <p style="font-size: 9px;"></p>
+          <p style="font-size: 9px;">Bollspelsvägen 3, 216 25 Malmö</p>
         </div>
       </div>
 

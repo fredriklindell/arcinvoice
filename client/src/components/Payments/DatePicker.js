@@ -1,13 +1,9 @@
 import 'date-fns';
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { Grid, TextField } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function MaterialUIPickers({ setSelectedDate, selectedDate}) {
+export default function MaterialUIPickers({ setSelectedDate, selectedDate }) {
   // The first commit of Material-UI
 
 
@@ -16,23 +12,16 @@ export default function MaterialUIPickers({ setSelectedDate, selectedDate}) {
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container justifyContent="space-around" style={{width: '97%', paddingLeft: '10px', paddingBottom: '15px'}}>
-        <KeyboardDatePicker
-          fullWidth
-          disableToolbar
-          variant="outline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date paid"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-      </Grid>
-    </MuiPickersUtilsProvider>
+    <Grid container justifyContent="space-around" style={{ width: '97%', paddingLeft: '10px', paddingBottom: '15px' }}>
+      <DatePicker
+        fullWidth
+        disableToolbar
+        variant="outline"
+        label="Date paid"
+        value={selectedDate}
+        onChange={handleDateChange}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </Grid>
   );
 }

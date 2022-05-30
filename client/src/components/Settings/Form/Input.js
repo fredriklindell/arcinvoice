@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Grid } from '@material-ui/core';
+import { TextField, Grid } from '@mui/material';
 
 const Input = ({ name, handleChange, label, half, autoFocus, type, value, multiline, rows }) => (
   <Grid item xs={12} sm={half ? 6 : 12}>

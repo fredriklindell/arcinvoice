@@ -1,31 +1,29 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+// import DialogTitle from '@mui/material/DialogTitle';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+    m: 1,
+    minWidth: '120px',
   },
-}));
+};
 
 const InvoiceType = ({ type, setType }) => {
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  
+
 
   const handleChange = (event) => {
     setType(event.target.value);
@@ -41,13 +39,13 @@ const InvoiceType = ({ type, setType }) => {
 
   return (
     <div>
-      <p style={{marginBottom: '-10px', paddingTop: '10px', color: 'gray'}}>Select type</p>
-      <Button style={{lineSpacing: 1, fontSize: 35, fontWeight: 700}} onClick={handleClickOpen}>{type? type : 'Invoice'}</Button>
-      <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
+      <p style={{ paddingLeft: '8px', paddingTop: '10px', color: 'gray' }}>Select type</p>
+      <Button sx={{ lineSpacing: 1, fontSize: 35, fontWeight: 700, color: 'black' }} onClick={handleClickOpen}>{type ? type : 'Invoice'}</Button>
+      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
         {/* <DialogTitle>Fill the form</DialogTitle> */}
         <DialogContent>
-          <div className={classes.container}>
-            <FormControl className={classes.formControl}>
+          <div className={styles.container}>
+            <FormControl sx={styles.formControl}>
               <InputLabel id="demo-dialog-select-label">Select Tpye</InputLabel>
               <Select
                 labelId="demo-dialog-select-label"
