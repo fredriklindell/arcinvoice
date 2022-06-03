@@ -2,10 +2,11 @@ import React from 'react'
 import styles from './Settings.module.css'
 import Form from './Form/Form'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Settings = () => {
   const navigate = useNavigate()
-  const user = JSON.parse(localStorage.getItem('profile'))
+  const { user } = useSelector((state) => state?.auth)
 
   if (!user) {
     navigate('/login')
@@ -13,7 +14,6 @@ const Settings = () => {
 
   return (
     <div className={styles.pageContainer}>
-
       <section className={styles.hero}>
         <h1>Profile Settings</h1>
         <div className={styles.paragraph}>
@@ -21,10 +21,8 @@ const Settings = () => {
         </div>
       </section>
       <section className={styles.stat}>
-
         <Form user={user} />
       </section>
-
     </div>
   )
 }

@@ -1,0 +1,23 @@
+{
+  "semi": false,
+  "overrides": [
+    {
+      "files": "*.java",
+      "options": {
+        "semi": true,
+        "singleQuote": false
+      }
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.js"
+      ],
+      "options": {
+        "trailingComma": "es5",
+        "tabWidth": 2,
+        "singleQuote": true
+      }
+    }
+  ]
+}

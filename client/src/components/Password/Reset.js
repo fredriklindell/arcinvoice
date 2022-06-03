@@ -1,28 +1,27 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Button, Paper, Typography, Container, Grid } from '@mui/material';
-import styles from './styles';
-import Field from '../Login/Field';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Paper, Typography, Container, Grid } from '@mui/material'
+import styles from './styles'
+import Field from '../Login/Field'
 import { useParams, useNavigate } from 'react-router-dom'
 
-import { reset } from '../../actions/auth';
+import { reset } from '../../actions/auth'
 
 const Reset = () => {
-  const [form, setForm] = useState("");
-  const dispatch = useDispatch();
+  const [form, setForm] = useState('')
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { token } = useParams()
-  const user = JSON.parse(localStorage.getItem('profile'))
+  const { user } = useSelector((state) => state?.auth)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(reset({ password: form, token: token }, navigate))
   }
 
-  const handleChange = (e) => setForm(e.target.value);
-  const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword(!showPassword);
-
+  const handleChange = (e) => setForm(e.target.value)
+  const [showPassword, setShowPassword] = useState(false)
+  const handleShowPassword = () => setShowPassword(!showPassword)
 
   if (user) navigate('/dashboard')
 
@@ -30,12 +29,31 @@ const Reset = () => {
     <div style={{ paddingTop: '100px', paddingBottom: '100px' }}>
       <Container component="main" maxWidth="xs">
         <Paper sx={styles.paper} variant="outlined">
-          <Typography variant="h6" gutter="5">Please enter your new password</Typography>
+          <Typography variant="h6" gutter="5">
+            Please enter your new password
+          </Typography>
 
-          <form className={styles.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <form
+            className={styles.root}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit}
+          >
             <Grid container spacing={2}>
-              <Field name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
-              <Button type="submit" fullWidth variant="contained" color="primary" sx={styles.submit}>
+              <Field
+                name="password"
+                label="Password"
+                handleChange={handleChange}
+                type={showPassword ? 'text' : 'password'}
+                handleShowPassword={handleShowPassword}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={styles.submit}
+              >
                 Submit
               </Button>
             </Grid>
@@ -43,8 +61,7 @@ const Reset = () => {
         </Paper>
       </Container>
     </div>
-
-  );
+  )
 }
 
 export default Reset
