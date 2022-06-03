@@ -17,7 +17,6 @@ const ClientList = () => {
   const { clients } = useSelector((state) => state.clients)
   const { user } = useSelector((state) => state?.auth)
   const isLoading = useSelector((state) => state.clients.isLoading)
-  // const clients = []
 
   // useEffect(() => {
   // }, [currentId, dispatch]);
@@ -86,7 +85,6 @@ const ClientList = () => {
         setOpen={setOpen}
         currentId={currentId}
         setCurrentId={setCurrentId}
-        clients={clients}
       />
     </div>
   )

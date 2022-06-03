@@ -131,10 +131,10 @@ const Invoices = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { user } = useSelector((state) => state?.auth)
-  const rows = useSelector((state) => state.invoices.invoices)
+  const { invoices } = useSelector((state) => state.invoices)
   const isLoading = useSelector((state) => state.invoices.isLoading)
   // eslint-disable-next-line
-  const [openSnackbar, closeSnackbar] = useSnackbar()
+  const [openSnackbar] = useSnackbar()
 
   // const rows = []
 
@@ -152,10 +152,7 @@ const Invoices = () => {
   }
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(rows.length)
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -219,7 +216,7 @@ const Invoices = () => {
     )
   }
 
-  if (rows.length === 0) {
+  if (invoices.length === 0) {
     return (
       <div
         style={{
@@ -264,13 +261,7 @@ const Invoices = () => {
             </TableHead>
 
             <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : rows
-              ).map((row) => (
+              {invoices.map((row) => (
                 <TableRow key={row._id} style={{ cursor: 'pointer' }}>
                   <TableCell
                     sx={tableStyle}
@@ -333,19 +324,13 @@ const Invoices = () => {
                   </TableCell>
                 </TableRow>
               ))}
-
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
             <TableFooter>
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                   colSpan={6}
-                  count={rows.length}
+                  count={invoices.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{
