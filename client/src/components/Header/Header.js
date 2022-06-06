@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import decode from 'jwt-decode'
 import cssStyles from './Header.module.css'
 
 import Box from '@mui/material/Box'
@@ -12,7 +11,6 @@ import Popper from '@mui/material/Popper'
 import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
 import Avatar from '@mui/material/Avatar'
-// import axios from 'axios'
 
 const styles = {
   root: {
@@ -26,35 +24,14 @@ const styles = {
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { user, token } = useSelector((state) => state?.auth)
+  const { user } = useSelector((state) => state?.auth)
   const navigate = useNavigate()
-  const location = useLocation()
-
-  //GET REPO INFO FROM GITHUB
-  // useEffect(() => {
-  //   getMetaData()
-  // },[])
-
-  // const getMetaData = async() => {
-  //   const response = await axios.get('https://api.github.com/repos/panshak/arc')
-  //       // console.log(response.data);
-  // }
 
   const logout = () => {
     dispatch({ type: 'LOGOUT' })
-    navigate('/')
   }
 
-  useEffect(() => {
-    //If token expires, logout the user
-    if (token) {
-      const decodedToken = decode(token)
-      if (decodedToken.exp * 1000 < new Date().getTime()) logout()
-    }
-    // eslint-disable-next-line
-  }, [location, token]) //when location changes, set the user
-
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -69,16 +46,6 @@ const Header = () => {
       event.preventDefault()
     }
   }
-
-  // return focus to the button when we transitioned from !open -> open
-  //  const prevOpen = React.useRef(open);
-  //  React.useEffect(() => {
-  //    if (prevOpen.current === true && open === false) {
-  //      anchorRef.current.focus();
-  //    }
-  //
-  //    prevOpen.current = open;
-  //  }, [open]);
 
   const open = Boolean(anchorEl)
 

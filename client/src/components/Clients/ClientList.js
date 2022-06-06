@@ -4,12 +4,11 @@ import Clients from './Clients'
 import AddClient from './AddClient'
 import { getClientsByUser } from '../../actions/clientActions'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import NoData from '../svgIcons/NoData'
 import Spinner from '../Spinner/Spinner'
 
 const ClientList = () => {
-  const navigate = useNavigate()
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [currentId, setCurrentId] = useState(null)
@@ -31,10 +30,6 @@ const ClientList = () => {
   useEffect(() => {
     dispatch(getClientsByUser({ search: user?._id || user?.googleId }))
   }, [location, dispatch])
-
-  if (!user) {
-    navigate('/login')
-  }
 
   if (isLoading) {
     return (

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { toCommas } from '../../utils/utils'
 import styles from './Dashboard.module.css'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { getInvoicesByUser } from '../../actions/invoiceActions'
 import Empty from '../svgIcons/Empty'
@@ -13,18 +13,13 @@ import Spinner from '../Spinner/Spinner'
 
 const Dashboard = () => {
   const location = useLocation()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { invoices, isLoading } = useSelector((state) => state?.invoices)
-  const { user, profile, token } = useSelector((state) => state?.auth)
+  const { user } = useSelector((state) => state?.auth)
   // const unpaid = invoices?.filter((invoice) => (invoice.status === 'Unpaid') || (invoice.status === 'Partial'))
   const overDue = invoices?.filter(
     (invoice) => invoice.dueDate <= new Date().toISOString()
   )
-
-  console.log('FIDDE: Dashboard: user', user)
-  console.log('FIDDE: Dashboard: profile', profile)
-  console.log('FIDDE: Dashboard: token', token)
 
   let paymentHistory = []
   for (let i = 0; i < invoices.length; i++) {
@@ -68,10 +63,6 @@ const Dashboard = () => {
   )
   const paid = invoices?.filter((invoice) => invoice.status === 'Paid')
   const partial = invoices?.filter((invoice) => invoice.status === 'Partial')
-
-  if (!user) {
-    navigate('/login')
-  }
 
   if (isLoading) {
     return (

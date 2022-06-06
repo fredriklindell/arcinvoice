@@ -265,10 +265,6 @@ const Invoice = () => {
     return <Paper elevation={3} {...props} />
   }
 
-  if (!user) {
-    navigate('/login')
-  }
-
   return (
     <div className={cssStyles.invoiceLayout}>
       <form onSubmit={handleSubmit} className="mu-form">

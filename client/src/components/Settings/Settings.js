@@ -1,16 +1,10 @@
 import React from 'react'
 import styles from './Settings.module.css'
 import Form from './Form/Form'
-import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const Settings = () => {
-  const navigate = useNavigate()
   const { user } = useSelector((state) => state?.auth)
-
-  if (!user) {
-    navigate('/login')
-  }
 
   return (
     <div className={styles.pageContainer}>

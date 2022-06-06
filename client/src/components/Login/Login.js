@@ -3,7 +3,7 @@ import Field from './Field'
 import styles from './styles'
 import cssStyles from './Login.module.css'
 import { GoogleLogin } from '@react-oauth/google'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { signup, signin } from '../../actions/auth'
 import {
@@ -38,7 +38,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   // eslint-disable-next-line
   const [openSnackbar, closeSnackbar] = useSnackbar()
-  const { user } = useSelector((state) => state?.auth)
 
   const [loading, setLoading] = useState(false)
 
@@ -61,6 +60,7 @@ const Login = () => {
     setIsSignup((prevState) => !prevState)
   }
 
+  // TODO: why is this not in the auth actions?
   const googleSuccess = async (res) => {
     const result = jwt_decode(res?.credential)
     const token = res?.credential
@@ -79,7 +79,6 @@ const Login = () => {
 
     try {
       dispatch({ type: 'AUTH', data: { result, token } })
-
       navigate('/dashboard')
     } catch (error) {
       console.log(error)
@@ -88,10 +87,6 @@ const Login = () => {
   const googleError = (error) => {
     console.log(error)
     console.log('Google Sign In was unseccassful. Try again later')
-  }
-
-  if (user) {
-    navigate('/dashboard')
   }
 
   return (

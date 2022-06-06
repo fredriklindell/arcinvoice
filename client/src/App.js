@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import SnackbarProvider from 'react-simple-snackbar'
 import {
@@ -22,6 +21,7 @@ import Header from './components/Header/Header'
 import Settings from './components/Settings/Settings'
 import Forgot from './components/Password/Forgot'
 import Reset from './components/Password/Reset'
+import AuthGate from './components/AuthGate'
 import { useSelector } from 'react-redux'
 
 const theme = createTheme()
@@ -36,22 +36,24 @@ function App() {
           <ThemeProvider theme={theme}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <SnackbarProvider>
-                {user && <NavBar />}
-                <Header />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/invoice" element={<Invoice />} />
-                  <Route path="/edit/invoice/:id" element={<Invoice />} />
-                  <Route path="/invoice/:id" element={<InvoiceDetails />} />
-                  <Route path="/invoices" element={<Invoices />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/customers" element={<ClientList />} />
-                  <Route path="/forgot" element={<Forgot />} />
-                  <Route path="/reset/:token" element={<Reset />} />
-                </Routes>
-                <Footer />
+                <AuthGate>
+                  {user && <NavBar />}
+                  <Header />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/invoice" element={<Invoice />} />
+                    <Route path="/edit/invoice/:id" element={<Invoice />} />
+                    <Route path="/invoice/:id" element={<InvoiceDetails />} />
+                    <Route path="/invoices" element={<Invoices />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/customers" element={<ClientList />} />
+                    <Route path="/forgot" element={<Forgot />} />
+                    <Route path="/reset/:token" element={<Reset />} />
+                  </Routes>
+                  <Footer />
+                </AuthGate>
               </SnackbarProvider>
             </LocalizationProvider>
           </ThemeProvider>

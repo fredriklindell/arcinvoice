@@ -12,9 +12,7 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH:
-      // TODO: is this needed if moved to auth?
       localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
-      // console.log(action?.data)
       return {
         ...state,
         authData: action?.data,
@@ -25,12 +23,23 @@ const authReducer = (state = initialState, action) => {
 
     case LOGOUT:
       localStorage.removeItem('profile')
-      return { ...state, authData: null }
+      return {
+        ...state,
+        authData: null,
+        token: null,
+        user: null,
+        profile: null,
+      }
 
     case UPDATE_USER:
       localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
-      // console.log(action?.data)
-      return { ...state, authData: action?.data }
+      return {
+        ...state,
+        authData: action?.data,
+        token: action?.data?.token,
+        user: action?.data?.result,
+        profile: action?.data?.userProfile,
+      }
 
     default:
       return state

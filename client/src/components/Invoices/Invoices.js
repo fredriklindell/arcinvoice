@@ -171,10 +171,6 @@ const Invoices = () => {
     navigate(`/invoice/${id}`)
   }
 
-  if (!user) {
-    navigate('/login')
-  }
-
   function checkStatus(status) {
     return status === 'Partial'
       ? {
