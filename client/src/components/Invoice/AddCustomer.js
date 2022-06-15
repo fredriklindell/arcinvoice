@@ -8,14 +8,15 @@ import MuiDialogContent from '@mui/material/DialogContent'
 import MuiDialogActions from '@mui/material/DialogActions'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
-import Typography from '@mui/material/Typography'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { createClient } from '../../actions/clientActions'
+import { createCustomer } from '../../actions/customer-actions'
 import { useLocation } from 'react-router-dom'
 
 import { useSnackbar } from 'react-simple-snackbar'
 
+// TODO: REMOVE AND USE AddCustomer IN CUSTOMERS INSTEAD
+// TODO: REMOVE
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -63,7 +64,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions)
 
-const AddClient = ({ setOpen, open }) => {
+const AddCustomer = ({ setOpen, open }) => {
   const location = useLocation()
   const [clientData, setClientData] = useState({
     name: '',
@@ -204,4 +205,4 @@ const AddClient = ({ setOpen, open }) => {
   )
 }
 
-export default AddClient
+export default AddCustomer

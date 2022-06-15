@@ -5,7 +5,7 @@ import styles from './styles'
 import Field from '../Login/Field'
 import { useParams, useNavigate } from 'react-router-dom'
 
-import { reset } from '../../actions/auth'
+import { reset } from '../../actions/auth-actions'
 
 const Reset = () => {
   const [form, setForm] = useState('')

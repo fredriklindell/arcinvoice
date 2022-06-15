@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 
-import invoices from './invoices'
-import clients from './clients'
 import auth from './auth'
-import profiles from './profiles'
+import companies from './companies'
+import customers from './customers'
+import invoices from './invoices'
 
-export default combineReducers({ invoices, clients, auth, profiles })
+export default combineReducers({ auth, companies, customers, invoices })

@@ -6,18 +6,24 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Avatar, Box, Button, Paper, Grid, Container } from '@mui/material'
 import Uploader from './Uploader'
-import { getProfileByUser, updateProfile } from '../../../actions/profile'
+import {
+  getCompaniesByUser,
+  updateCompany,
+} from '../../../actions/company-actions'
 import styles from './styles'
 import Input from './Input'
 import ProfileDetail from './Profile'
+import Empty from '../../svgIcons/Empty'
 
 const Form = () => {
   const { user } = useSelector((state) => state?.auth)
+
+  // TODO: update
   const initialState = {
     name: '',
     email: '',
     phoneNumber: '',
-    businessName: '',
+    name: '',
     contactAddress: '',
     logo: '',
     paymentDetails: '',
@@ -26,7 +32,7 @@ const Form = () => {
   const [form, setForm] = useState(initialState)
   const location = useLocation()
   const dispatch = useDispatch()
-  const { profile } = useSelector((state) => state.profiles)
+  const { companies } = useSelector((state) => state.companies)
   const [switchEdit, setSwitchEdit] = useState(0)
 
   // eslint-disable-next-line
@@ -34,27 +40,42 @@ const Form = () => {
 
   useEffect(() => {
     if (switchEdit === 1) {
-      setForm(profile)
+      setForm(companies[0])
     }
   }, [switchEdit])
 
   useEffect(() => {
-    dispatch(getProfileByUser({ search: user?._id || user?.googleId }))
+    dispatch(getCompaniesByUser({ search: user?._id || user?.googleId }))
   }, [location, switchEdit])
 
-  localStorage.setItem('profileDetail', JSON.stringify({ ...profile }))
+  // localStorage.setItem('profileDetail', JSON.stringify({ ...companies[0] }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await dispatch(updateProfile(profile?._id, form, openSnackbar))
+    dispatch(updateCompany(companies[0]?._id, form, openSnackbar))
     setSwitchEdit(0)
   }
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value })
 
-  if (profile === null) {
-    return null
+  if (companies?.length === 0) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          paddingTop: '20px',
+        }}
+      >
+        <Empty />
+        <p style={{ color: 'gray' }}>
+          Nothing to display. Click the plus icon to start creating
+        </p>
+      </Box>
+    )
   }
 
   return (
@@ -62,13 +83,13 @@ const Form = () => {
       {switchEdit === 0 && (
         <Container component="main" maxWidth="sm">
           <Paper sx={styles.paper} elevation={0}>
-            <ProfileDetail profile={profile} />
+            <ProfileDetail company={companies[0]} />
             <Button
               variant="outlined"
               sx={{ margin: '30px', padding: '15px 30px' }}
               onClick={() => setSwitchEdit(1)}
             >
-              Edit Profile
+              Edit Company
             </Button>
           </Paper>
         </Container>
@@ -79,7 +100,7 @@ const Form = () => {
           <Paper sx={styles.paper} elevation={1}>
             <Box sx={styles.avatarContainer}>
               <Avatar
-                src={profile?.logo}
+                src={company?.logo}
                 alt=""
                 sx={{ width: '100px', height: '100px', ...styles.avatar }}
               />

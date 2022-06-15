@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import cssStyles from './Clients.module.css'
+import cssStyles from './Customers.module.css'
 // import moment from 'moment'
 import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
@@ -25,7 +25,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor'
 import { Button } from '@mui/material'
 import { useSnackbar } from 'react-simple-snackbar'
 
-import { deleteClient } from '../../actions/clientActions'
+import { deleteCustomer } from '../../actions/customer-actions'
 
 const styles = {
   root: {
@@ -113,8 +113,8 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 }
 
-const Clients = ({ setOpen, setCurrentId }) => {
-  const { clients } = useSelector((state) => state.clients)
+const Customers = ({ setOpen, setCurrentId }) => {
+  const { customers } = useSelector((state) => state.customers)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   // eslint-disable-next-line
@@ -165,7 +165,7 @@ const Clients = ({ setOpen, setCurrentId }) => {
             </TableHead>
 
             <TableBody>
-              {clients.map((row, index) => (
+              {customers.map((row, index) => (
                 <TableRow key={row._id} styel={{ cursor: 'pointer' }}>
                   <TableCell sx={{ ...tableStyle, width: '10px' }}>
                     {index + 1}
@@ -190,7 +190,7 @@ const Clients = ({ setOpen, setCurrentId }) => {
                   <TableCell sx={{ ...tableStyle, width: '10px' }}>
                     <IconButton
                       onClick={() =>
-                        dispatch(deleteClient(row._id, openSnackbar))
+                        dispatch(deleteCustomer(row._id, openSnackbar))
                       }
                       size="large"
                     >
@@ -207,7 +207,7 @@ const Clients = ({ setOpen, setCurrentId }) => {
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                   colSpan={6}
-                  count={clients.length}
+                  count={customers.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{
@@ -227,4 +227,4 @@ const Clients = ({ setOpen, setCurrentId }) => {
   )
 }
 
-export default Clients
+export default Customers

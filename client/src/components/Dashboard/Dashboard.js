@@ -3,7 +3,7 @@ import { toCommas } from '../../utils/utils'
 import styles from './Dashboard.module.css'
 import { useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { getInvoicesByUser } from '../../actions/invoiceActions'
+import { getInvoicesByUser } from '../../actions/invoice-actions'
 import Empty from '../svgIcons/Empty'
 import Chart from './Chart'
 // import Donut from './Donut'
@@ -15,6 +15,7 @@ const Dashboard = () => {
   const location = useLocation()
   const dispatch = useDispatch()
   const { invoices, isLoading } = useSelector((state) => state?.invoices)
+  const { companies } = useSelector((state) => state?.companies)
   const { user } = useSelector((state) => state?.auth)
   // const unpaid = invoices?.filter((invoice) => (invoice.status === 'Unpaid') || (invoice.status === 'Partial'))
   const overDue = invoices?.filter(
@@ -31,7 +32,7 @@ const Dashboard = () => {
   }
 
   //sort payment history by date
-  const sortHistoryByDate = paymentHistory.sort(function (a, b) {
+  const sortHistoryByDate = paymentHistory.sort(function(a, b) {
     var c = new Date(a.datePaid)
     var d = new Date(b.datePaid)
     return d - c
@@ -91,7 +92,6 @@ const Dashboard = () => {
           paddingTop: '20px',
         }}
       >
-        {/* <Spinner /> */}
         <Empty />
         <p style={{ padding: '40px', color: 'gray' }}>
           Nothing to display. Click the plus icon to start creating

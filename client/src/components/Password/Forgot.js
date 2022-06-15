@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Paper, Typography, Container, Grid } from '@mui/material'
 import styles from './styles'
 import Field from '../Login/Field'
-import { forgot } from '../../actions/auth'
+import { forgot } from '../../actions/auth-actions'
 import cssStyles from './Password.module.css'
 
 const Forgot = () => {

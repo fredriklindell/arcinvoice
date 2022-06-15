@@ -36,10 +36,11 @@ import {
   createInvoice,
   getInvoice,
   updateInvoice,
-} from '../../actions/invoiceActions'
-import { getClientsByUser } from '../../actions/clientActions'
-import { getProfileByUser } from '../../actions/profile'
-import AddClient from './AddClient'
+} from '../../actions/invoice-actions'
+import { getCustomersByCompany } from '../../actions/customer-actions'
+import { getCompanyByUser } from '../../actions/company-actions'
+// import AddCustomer from './AddCustomer'
+import AddCustomer from './../Customers/AddCustomer'
 import InvoiceType from './InvoiceType'
 import axios from 'axios'
 import { useLocation } from 'react-router-dom'
@@ -81,12 +82,12 @@ const Invoice = () => {
   const [selectedDate, setSelectedDate] = useState(
     today.getTime() + 7 * 24 * 60 * 60 * 1000
   )
-  const [client, setClient] = useState(null)
+  const [customer, setCustomer] = useState(null)
   const [type, setType] = useState('Invoice')
   const [status, setStatus] = useState('')
   const { id } = useParams()
-  const clients = useSelector((state) => state.clients.clients)
-  const { profile } = useSelector((state) => state.profiles)
+  const { customers } = useSelector((state) => state.customers)
+  const { company } = useSelector((state) => state.companies)
   const { invoice } = useSelector((state) => state.invoices)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -122,8 +123,9 @@ const Invoice = () => {
   }, [id])
 
   useEffect(() => {
-    dispatch(getClientsByUser({ search: user?._id || user?.googleId }))
-    dispatch(getProfileByUser({ search: user?._id || user?.googleId }))
+    //    dispatch(getCustomersByCompany({ search: user?._id || user?.googleId }))
+    // TODO: this should not be necessary
+    dispatch(getCompanyByUser({ search: user?._id || user?.googleId }))
     // eslint-disable-next-line
   }, [dispatch])
 
@@ -132,7 +134,7 @@ const Invoice = () => {
       //Automatically set the default invoice values as the ones in the invoice to be updated
       setInvoiceData(invoice)
       setRates(invoice.rates)
-      setClient(invoice.client)
+      setCustomer(invoice.customer)
       setType(invoice.type)
       setStatus(invoice.status)
       setSelectedDate(invoice.dueDate)
@@ -223,7 +225,7 @@ const Invoice = () => {
           rates: rates,
           currency: currency,
           dueDate: selectedDate,
-          client,
+          customer,
           type: type,
           status: status,
         })
@@ -240,12 +242,11 @@ const Invoice = () => {
             rates: rates,
             currency: currency,
             dueDate: selectedDate,
-            invoiceNumber: `${
-              invoiceData.invoiceNumber < 100
-                ? Number(invoiceData.invoiceNumber).toString().padStart(3, '0')
-                : Number(invoiceData.invoiceNumber)
-            }`,
-            client,
+            invoiceNumber: `${invoiceData.invoiceNumber < 100
+              ? Number(invoiceData.invoiceNumber).toString().padStart(3, '0')
+              : Number(invoiceData.invoiceNumber)
+              }`,
+            customer,
             type: type,
             status: status,
             paymentRecords: [],
@@ -268,15 +269,15 @@ const Invoice = () => {
   return (
     <div className={cssStyles.invoiceLayout}>
       <form onSubmit={handleSubmit} className="mu-form">
-        <AddClient setOpen={setOpen} open={open} />
+        <AddCustomer setOpen={setOpen} open={open} />
         <Container sx={styles.headerContainer}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
-              {profile && (
+              {company && (
                 <Avatar
                   alt="Logo"
                   variant="square"
-                  src={profile?.logo}
+                  src={company?.logo}
                   sx={styles.large}
                 />
               )}
@@ -340,29 +341,29 @@ const Invoice = () => {
                   Bill to
                 </Typography>
 
-                {client && (
+                {customer && (
                   <>
                     <Typography variant="subtitle2" gutterBottom>
-                      {client.name}
+                      {customer.name}
                     </Typography>
-                    <Typography variant="body2">{client.email}</Typography>
-                    <Typography variant="body2">{client.phone}</Typography>
-                    <Typography variant="body2">{client.address}</Typography>
+                    <Typography variant="body2">{customer.email}</Typography>
+                    <Typography variant="body2">{customer.phone}</Typography>
+                    <Typography variant="body2">{customer.address}</Typography>
                     <Button
                       color="primary"
                       size="small"
                       style={{ textTransform: 'none' }}
-                      onClick={() => setClient(null)}
+                      onClick={() => setCustomer(null)}
                     >
                       Change
                     </Button>
                   </>
                 )}
                 <div
-                  style={client ? { display: 'none' } : { display: 'block' }}
+                  style={customer ? { display: 'none' } : { display: 'block' }}
                 >
                   <Autocomplete
-                    options={clients || []}
+                    options={customers || []}
                     getOptionLabel={(option) => option.name}
                     PaperComponent={CustomPaper}
                     renderInput={(params) => (
@@ -374,11 +375,11 @@ const Invoice = () => {
                         variant="outlined"
                       />
                     )}
-                    value={clients?.name}
-                    onChange={(_, value) => setClient(value)}
+                    value={customer?.name}
+                    onChange={(_, value) => setCustomer(value)}
                   />
                 </div>
-                {!client && (
+                {!customer && (
                   <>
                     <Grid item style={{ paddingBottom: '10px' }}>
                       <Chip
@@ -514,7 +515,7 @@ const Invoice = () => {
                           (itemField.quantity *
                             itemField.unitPrice *
                             itemField.discount) /
-                            100
+                          100
                         }
                         disabled
                       />{' '}

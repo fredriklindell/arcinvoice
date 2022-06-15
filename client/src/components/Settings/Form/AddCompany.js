@@ -4,18 +4,18 @@ import { useLocation } from 'react-router-dom'
 import withStyles from '@mui/styles/withStyles'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
-import MuiDialogTitle from '@mui/material/DialogTitle'
-import MuiDialogContent from '@mui/material/DialogContent'
-import MuiDialogActions from '@mui/material/DialogActions'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { createClient, updateClient } from '../../actions/clientActions'
+import { createCompany, updateCompany } from '../../../actions/company-actions'
 import { useSnackbar } from 'react-simple-snackbar'
 
-const styles = (theme) => ({
+const stylesOld = (theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
@@ -30,41 +30,27 @@ const styles = (theme) => ({
   },
 })
 
-const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props
-  return (
-    <MuiDialogTitle className={classes.root} {...other}>
-      <Typography>{children}</Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-          size="large"
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  )
-})
-
-const DialogContent = withStyles((theme) => ({
+const styles = {
   root: {
-    padding: theme.spacing(3),
-  },
-}))(MuiDialogContent)
-
-const DialogActions = withStyles((theme) => ({
-  root: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     margin: 0,
-    padding: theme.spacing(1),
+    p: 1,
+    pl: 2,
+    backgroundColor: '#1976D2',
+    marginLeft: 0,
+    color: 'white',
   },
-}))(MuiDialogActions)
+  closeButton: {
+    color: 'white',
+  },
+}
 
-const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
+const AddCompany = ({ setOpen, open, currentId, setCurrentId }) => {
   const location = useLocation()
-  const [clientData, setClientData] = useState({
+  const [companyData, setCompanyData] = useState({
     name: '',
     email: '',
     phone: '',
@@ -73,33 +59,35 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
   })
   const { user } = useSelector((state) => state?.auth)
   const dispatch = useDispatch()
-  const client = useSelector((state) =>
-    currentId ? state.clients.clients.find((c) => c._id === currentId) : null
+  const company = useSelector((state) =>
+    currentId
+      ? state.companies.companies.find((c) => c._id === currentId)
+      : null
   )
   // eslint-disable-next-line
   const [openSnackbar, closeSnackbar] = useSnackbar()
 
   useEffect(() => {
-    if (client) {
-      setClientData(client)
+    if (company) {
+      setCompanyData(company)
     }
-  }, [client])
+  }, [company])
 
   useEffect(() => {
     var checkId = user?._id
     if (checkId !== undefined) {
-      setClientData({ ...clientData, userId: [checkId] })
+      setCompanyData({ ...companyData, userId: [checkId] })
     } else {
-      setClientData({ ...clientData, userId: [user?.googleId] })
+      setCompanyData({ ...companyData, userId: [user?.googleId] })
     }
   }, [location])
 
-  const handleSubmitClient = (e) => {
+  const handleSubmitCompany = (e) => {
     e.preventDefault()
     if (currentId) {
-      dispatch(updateClient(currentId, clientData, openSnackbar))
+      dispatch(updateCompany(currentId, companyData, openSnackbar))
     } else {
-      dispatch(createClient(clientData, openSnackbar))
+      dispatch(createCompany(companyData, openSnackbar))
     }
 
     clear()
@@ -108,7 +96,7 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
 
   const clear = () => {
     setCurrentId(null)
-    setClientData({ name: '', email: '', phone: '', address: '', userId: [] })
+    setCompanyData({ name: '', email: '', phone: '', address: '', userId: [] })
   }
 
   const handleClose = () => {
@@ -145,9 +133,19 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
           <DialogTitle
             id="customized-dialog-title"
             onClose={handleClose}
-            style={{ paddingLeft: '20px', color: 'white' }}
+            sx={styles.root}
           >
-            {currentId ? 'Edit Customer' : 'Add new Client'}
+            <Typography>
+              {currentId ? 'Edit Company' : 'Add new Company'}
+            </Typography>
+            <IconButton
+              aria-label="close"
+              sx={styles.closeButton}
+              onClick={handleClose}
+              size="large"
+            >
+              <CloseIcon />
+            </IconButton>
           </DialogTitle>
           <DialogContent dividers>
             <div className="customInputs">
@@ -157,9 +155,9 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
                 name="name"
                 type="text"
                 onChange={(e) =>
-                  setClientData({ ...clientData, name: e.target.value })
+                  setCompanyData({ ...companyData, name: e.target.value })
                 }
-                value={clientData.name}
+                value={companyData.name}
               />
 
               <input
@@ -168,9 +166,9 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
                 name="email"
                 type="text"
                 onChange={(e) =>
-                  setClientData({ ...clientData, email: e.target.value })
+                  setCompanyData({ ...companyData, email: e.target.value })
                 }
-                value={clientData.email}
+                value={companyData.email}
               />
 
               <input
@@ -179,9 +177,9 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
                 name="phone"
                 type="text"
                 onChange={(e) =>
-                  setClientData({ ...clientData, phone: e.target.value })
+                  setCompanyData({ ...companyData, phone: e.target.value })
                 }
-                value={clientData.phone}
+                value={companyData.phone}
               />
 
               <input
@@ -190,19 +188,15 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
                 name="address"
                 type="text"
                 onChange={(e) =>
-                  setClientData({ ...clientData, address: e.target.value })
+                  setCompanyData({ ...companyData, address: e.target.value })
                 }
-                value={clientData.address}
+                value={companyData.address}
               />
             </div>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={handleSubmitClient}
-              variant="contained"
-              style={{ marginRight: '25px' }}
-            >
-              Save Customer
+            <Button onClick={handleSubmitCompany} variant="contained">
+              Save Company
             </Button>
           </DialogActions>
         </Dialog>
@@ -211,4 +205,4 @@ const AddClient = ({ setOpen, open, currentId, setCurrentId }) => {
   )
 }
 
-export default AddClient
+export default AddCompany

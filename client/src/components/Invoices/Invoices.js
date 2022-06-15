@@ -23,7 +23,7 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import { useLocation } from 'react-router-dom'
 
-import { deleteInvoice, getInvoicesByUser } from '../../actions/invoiceActions'
+import { deleteInvoice, getInvoicesByUser } from '../../actions/invoice-actions'
 import NoData from '../svgIcons/NoData'
 import Spinner from '../Spinner/Spinner'
 import { useSnackbar } from 'react-simple-snackbar'
@@ -174,26 +174,26 @@ const Invoices = () => {
   function checkStatus(status) {
     return status === 'Partial'
       ? {
-          border: 'solid 0px #1976d2',
-          backgroundColor: '#baddff',
-          padding: '8px 18px',
-          borderRadius: '20px',
-        }
+        border: 'solid 0px #1976d2',
+        backgroundColor: '#baddff',
+        padding: '8px 18px',
+        borderRadius: '20px',
+      }
       : status === 'Paid'
-      ? {
+        ? {
           border: 'solid 0px green',
           backgroundColor: '#a5ffcd',
           padding: '8px 18px',
           borderRadius: '20px',
         }
-      : status === 'Unpaid'
-      ? {
-          border: 'solid 0px red',
-          backgroundColor: '#ffaa91',
-          padding: '8px 18px',
-          borderRadius: '20px',
-        }
-      : 'red'
+        : status === 'Unpaid'
+          ? {
+            border: 'solid 0px red',
+            backgroundColor: '#ffaa91',
+            padding: '8px 18px',
+            borderRadius: '20px',
+          }
+          : 'red'
   }
 
   if (isLoading) {

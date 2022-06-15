@@ -1,34 +1,23 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react'
-import Clients from './Clients'
-import AddClient from './AddClient'
-import { getClientsByUser } from '../../actions/clientActions'
+import Customers from './Customers'
+import AddCustomer from './AddCustomer'
+import { getCustomersByCompany } from '../../actions/customer-actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import NoData from '../svgIcons/NoData'
 import Spinner from '../Spinner/Spinner'
 
-const ClientList = () => {
+const CustomerList = () => {
   const location = useLocation()
   const [open, setOpen] = useState(false)
   const [currentId, setCurrentId] = useState(null)
   const dispatch = useDispatch()
-  const { clients } = useSelector((state) => state.clients)
+  const { customers, isLoading } = useSelector((state) => state.customers)
   const { user } = useSelector((state) => state?.auth)
-  const isLoading = useSelector((state) => state.clients.isLoading)
-
-  // useEffect(() => {
-  // }, [currentId, dispatch]);
-
-  //     useEffect(() => {
-  //         dispatch(getClients(1));
-  //         // dispatch(getClientsByUser({userId : user?.result?._id}));
-  //         // dispatch(getClientsByUser({ search :user?.result?._id, tags: tags.join(',') }));
-  //     },[location]
-  // )
 
   useEffect(() => {
-    dispatch(getClientsByUser({ search: user?._id || user?.googleId }))
+    dispatch(getCustomersByCompany({ search: user?._id || user?.googleId }))
   }, [location, dispatch])
 
   if (isLoading) {
@@ -47,7 +36,7 @@ const ClientList = () => {
     )
   }
 
-  if (clients.length === 0) {
+  if (customers.length === 0) {
     return (
       <div
         style={{
@@ -69,13 +58,13 @@ const ClientList = () => {
 
   return (
     <div>
-      <AddClient
+      <AddCustomer
         open={open}
         setOpen={setOpen}
         currentId={currentId}
         setCurrentId={setCurrentId}
       />
-      <Clients
+      <Customers
         open={open}
         setOpen={setOpen}
         currentId={currentId}
@@ -85,4 +74,4 @@ const ClientList = () => {
   )
 }
 
-export default ClientList
+export default CustomerList

@@ -5,7 +5,7 @@ import cssStyles from './Login.module.css'
 import { GoogleLogin } from '@react-oauth/google'
 import { useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { signup, signin } from '../../actions/auth'
+import { signup, signin } from '../../actions/auth-actions'
 import {
   Avatar,
   Button,
@@ -15,7 +15,7 @@ import {
   Container,
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { createProfile } from '../../actions/profile'
+import { createCompany } from '../../actions/company-actions'
 import { useSnackbar } from 'react-simple-snackbar'
 import CircularProgress from '@mui/material/CircularProgress'
 import jwt_decode from 'jwt-decode'
@@ -65,7 +65,7 @@ const Login = () => {
     const result = jwt_decode(res?.credential)
     const token = res?.credential
     dispatch(
-      createProfile({
+      createCompany({
         name: result?.name,
         email: result?.email,
         userId: result?.sub,

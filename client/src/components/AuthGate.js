@@ -7,6 +7,7 @@ const AuthGate = ({ children }) => {
   const dispatch = useDispatch()
   const location = useLocation()
   const { user, token } = useSelector((state) => state?.auth)
+  const { companies } = useSelector((state) => state?.companies)
 
   const logout = () => {
     dispatch({ type: 'LOGOUT' })
@@ -24,6 +25,15 @@ const AuthGate = ({ children }) => {
   // navigate to dashboard if already logged in
   if (user && location.pathname === '/login') {
     return <Navigate replace to="/dashboard" />
+  }
+
+  // NOTE: force user to create a company
+  if (
+    location.pathname !== '/settings' &&
+    user &&
+    (!companies || companies.length === 0)
+  ) {
+    return <Navigate replace to="/settings" />
   }
 
   // render route if logged in

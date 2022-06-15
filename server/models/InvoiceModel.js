@@ -1,26 +1,42 @@
 import mongoose from 'mongoose'
 
-const InvoiceSchema = mongoose.Schema({
-    dueDate: Date,
-    currency: String,
-    items: [ { itemName: String, unitPrice: String, quantity: String, discount: String } ],
-    rates: String,
+const InvoiceSchema = new mongoose.Schema({
+  dueDate: Date,
+  currency: String,
+  articles: [{
+    artcileNumber: Number,
+    articleName: String,
     vat: Number,
-    total: Number,
-    subTotal: Number,
-    notes: String,
-    status: String,
-    invoiceNumber: String,
-    type: String,
-    creator: [String],
-    totalAmountReceived: Number,
-    client: { name: String, email: String, phone: String, address: String },
-    paymentRecords: [ {amountPaid: Number, datePaid: Date, paymentMethod: String, note: String, paidBy: String } ],
-    createdAt: {
-        type: Date,
-        default: new Date()
-    }
+    unit: String,
+    unitPrice: String,
+    quantity: String,
+    discount: String
+  }],
+  rates: String,
+  total: Number,
+  subTotal: Number,
+  notes: String,
+  status: String,
+  invoiceNumber: String,
+  type: String,
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company'
+  },
+  totalAmountReceived: Number,
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client'
+  },
+  payments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Payment'
+  }],
+  createdAt: {
+    type: Date,
+    default: new Date()
+  }
 })
 
-const InvoiceModel = mongoose.model('InvoiceModel', InvoiceSchema)
+const InvoiceModel = mongoose.model('Invoice', InvoiceSchema)
 export default InvoiceModel
