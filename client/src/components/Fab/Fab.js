@@ -12,11 +12,9 @@ import AddCustomer from '../Customers/AddCustomer'
 const FabButton = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const mainButtonStyles = { backgroundColor: '#1976D2' }
+  const mainButtonStyles = { backgroundColor: '#1976D2', margin: 0, padding: 0 }
   const [companyDialogOpen, setCompanyDialogOpen] = useState(false)
   const [customerDialogOpen, setCustomerDialogOpen] = useState(false)
-
-  // if(location.pathname === '/invoice') return null
 
   return (
     <div>

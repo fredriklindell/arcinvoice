@@ -32,13 +32,14 @@ const authReducer = (state = initialState, action) => {
       }
 
     case UPDATE_USER:
-      localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
+      const currentStoredProfile = JSON.parse(localStorage.getItem('profile'))
+      localStorage.setItem(
+        'profile',
+        JSON.stringify({ ...currentStoredProfile, result: action?.payload })
+      )
       return {
         ...state,
-        authData: action?.data,
-        token: action?.data?.token,
-        user: action?.data?.result,
-        profile: action?.data?.userProfile,
+        user: action?.payload,
       }
 
     default:

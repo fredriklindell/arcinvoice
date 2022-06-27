@@ -1,11 +1,27 @@
 import mongoose from 'mongoose'
 
 const CompanySchema = new mongoose.Schema({
-  name: String,
-  address: String,
-  zip: String,
-  city: String,
-  country: String,
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  zip: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
   phoneNumber: String,
   email: {
     type: String,
@@ -37,10 +53,16 @@ const CompanySchema = new mongoose.Schema({
       ref: 'CompanyReference',
     },
   ],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  //  createdBy: {
+  //    type: mongoose.Schema.Types.ObjectId,
+  //    ref: 'User',
+  //  },
 })
 
 const CompanyModel = mongoose.model('Company', CompanySchema)

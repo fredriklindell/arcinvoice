@@ -25,42 +25,51 @@ export const getCompany = async (req, res) => {
 }
 
 export const createCompany = async (req, res) => {
-  const {
-    name,
-    email,
-    phoneNumber,
-    businessName,
-    contactAddress,
-    businessRegistrationNumber,
-    logo,
-    website,
-    user,
-  } = req.body
+  //  const {
+  //    name,
+  //    email,
+  //    phoneNumber,
+  //    businessName,
+  //    contactAddress,
+  //    businessRegistrationNumber,
+  //    logo,
+  //    website,
+  //    user,
+  //  } = req.body
+  const company = req.body
 
   const newCompany = new CompanyModel({
-    name,
-    email,
-    phoneNumber,
-    businessName,
-    contactAddress,
-    businessRegistrationNumber,
-    logo,
-    website,
-    user,
+    ...company,
     createdAt: new Date().toISOString(),
   })
+  //  const newCompany = new CompanyModel({
+  //    name,
+  //    email,
+  //    phoneNumber,
+  //    businessName,
+  //    contactAddress,
+  //    businessRegistrationNumber,
+  //    logo,
+  //    website,
+  //    user,
+  //    createdAt: new Date().toISOString(),
+  //  })
 
   try {
     const existingCompany = await CompanyModel.findOne({
-      businessRegistrationNumber,
-      user,
+      businessRegistrationNumber: company.businessRegistrationNumber,
+      users: company.users, // TODO: FIX
     })
 
     if (existingCompany)
       return res.status(404).json({ message: 'Company already exist' })
     await newCompany.save()
 
-    res.status(201).json(newCompany)
+    const returnCompany = await CompanyModel.findById(newCompany._id).populate(
+      'users'
+    )
+
+    res.status(201).json(returnCompany)
   } catch (error) {
     res.status(409).json({ message: error.message })
   }
@@ -72,7 +81,9 @@ export const getCompanyByUser = async (req, res) => {
   try {
     // const email = new RegExp(searchQuery, "i");
 
-    const company = await CompanyModel.findOne({ user: searchQuery })
+    const company = await CompanyModel.findOne({ users: searchQuery }).populate(
+      'users'
+    )
 
     res.json({ data: company })
   } catch (error) {
@@ -86,7 +97,9 @@ export const getCompaniesByUser = async (req, res) => {
   try {
     // const email = new RegExp(searchQuery, "i");
 
-    const company = await CompanyModel.find({ user: searchQuery })
+    const company = await CompanyModel.find({ users: searchQuery }).populate(
+      'users'
+    )
 
     res.json({ data: company })
   } catch (error) {
@@ -122,7 +135,11 @@ export const updateCompany = async (req, res) => {
     { new: true }
   )
 
-  res.json(updatedCompany)
+  const returnCompany = await CompanyModel.findById(
+    updatedCompany._id
+  ).populate('users')
+
+  res.json(returnCompany)
 }
 
 export const deleteCompany = async (req, res) => {

@@ -94,7 +94,7 @@ export const updateCompany = (id, form, openSnackbar) => async (dispatch) => {
     const { data } = await api.updateCompany(id, form)
 
     dispatch({ type: UPDATE_COMPANY, payload: data })
-    openSnackbar('Company updated successfully')
+    openSnackbar('Company successfully updated')
   } catch (error) {
     console.log(error)
   }

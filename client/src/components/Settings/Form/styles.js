@@ -5,7 +5,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'left',
     p: 2,
-    border: 'solid 1px #bcbcbc'
+    border: 'solid 1px #bcbcbc',
     // backgroundColor: '#EEEEEE'
   },
   root: {
@@ -18,7 +18,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     borderBottom: 'solid 1px #dddddd',
-    pb: 2
+    pb: 2,
   },
   avatar: {
     backgroundColor: 'white',
@@ -37,6 +37,15 @@ const styles = {
   googleButton: {
     mb: 2,
   },
-};
+  accordionSummary: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexGrow: 1,
+  },
+  logo: {
+    mr: 2,
+  },
+}
 
-export default styles;
+export default styles

@@ -15,6 +15,7 @@ export const getCustomer = (id) => async (dispatch) => {
     dispatch({ type: START_LOADING })
     const { data } = await api.fetchCustomer(id)
     dispatch({ type: FETCH_CUSTOMER, payload: { client: data } })
+    dispatch({ type: END_LOADING })
   } catch (error) {
     console.log(error)
   }

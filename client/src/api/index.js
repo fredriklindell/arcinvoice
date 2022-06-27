@@ -5,8 +5,9 @@ const API = axios.create({ baseURL: process.env.REACT_APP_API })
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem('profile')) {
-    req.headers.authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token
-      }`
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem('profile')).token
+    }`
   }
 
   return req
@@ -34,10 +35,12 @@ export const signIn = (formData) => API.post('/users/signin', formData)
 export const signUp = (formData) => API.post('/users/signup', formData)
 export const forgot = (formData) => API.post('/users/forgot', formData)
 export const reset = (formData) => API.post('/users/reset', formData)
+export const updateUserName = (id, newUserName) => API.patch(`/users/${id}`, { newUserName })
 
 export const fetchCompaniesBySearch = (searchQuery) =>
   API.get(
-    `/companies/search?searchQuery=${searchQuery.search || searchQuery.year || 'none'
+    `/companies/search?searchQuery=${
+      searchQuery.search || searchQuery.year || 'none'
     }`
   )
 export const fetchCompany = (id) => API.get(`/companies/${id}`)
@@ -47,6 +50,8 @@ export const fetchCompaniesByUser = (searchQuery) =>
 export const fetchCompanyByUser = (searchQuery) =>
   API.get(`/companies/user/?searchQuery=${searchQuery.search}`)
 export const createCompany = (newProfile) => API.post('/companies', newProfile)
-export const updateCompany = (id, updatedProfile) =>
-  API.patch(`/companies/${id}`, updatedProfile)
+export const updateCompany = (id, updatedCompany) =>
+  API.patch(`/companies/${id}`, updatedCompany)
 export const deleteCompany = (id) => API.delete(`/companies/${id}`)
+
+export const fetchUsers = () => API.get(`/users`)

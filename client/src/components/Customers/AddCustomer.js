@@ -1,15 +1,20 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
 import withStyles from '@mui/styles/withStyles'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+} from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
-import Typography from '@mui/material/Typography'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { createCustomer, updateCustomer } from '../../actions/customer-actions'
@@ -31,17 +36,20 @@ const styles = {
   closeButton: {
     color: 'white',
   },
+  form: {
+    padding: 0,
+  },
 }
 
 const AddCustomer = ({ setOpen, open, currentId, setCurrentId }) => {
   const location = useLocation()
-  const [customerData, setCustomerData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    userId: '',
-  })
+  //  const [customerData, setCustomerData] = useState({
+  //    name: '',
+  //    email: '',
+  //    phone: '',
+  //    address: '',
+  //    userId: '',
+  //  })
   const { user } = useSelector((state) => state?.auth)
   const dispatch = useDispatch()
   const customer = useSelector((state) =>
@@ -49,40 +57,51 @@ const AddCustomer = ({ setOpen, open, currentId, setCurrentId }) => {
       ? state.customers.customers.find((c) => c._id === currentId)
       : null
   )
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      name: customer?.name || '',
+      email: customer?.email || '',
+      phone: customer?.phone || '',
+      address: customer?.address || '',
+      userId: customer?.user?._id || user?._id || user?.googleId || '',
+    },
+  })
+
   // eslint-disable-next-line
   const [openSnackbar, closeSnackbar] = useSnackbar()
 
-  useEffect(() => {
-    if (customer) {
-      setCustomerData(customer)
-    }
-  }, [customer])
+  //  useEffect(() => {
+  //    if (customer) {
+  //      setCustomerData(customer)
+  //    }
+  //  }, [customer])
 
-  useEffect(() => {
-    var checkId = user?._id
-    if (checkId !== undefined) {
-      setCustomerData({ ...customerData, userId: [checkId] })
-    } else {
-      setCustomerData({ ...customerData, userId: [user?.googleId] })
-    }
-  }, [location])
+  //  useEffect(() => {
+  //    var checkId = user?._id
+  //    if (checkId !== undefined) {
+  //      setCustomerData({ ...customerData, userId: [checkId] })
+  //    } else {
+  //      setCustomerData({ ...customerData, userId: [user?.googleId] })
+  //    }
+  //  }, [location])
 
-  const handleSubmitCustomer = (e) => {
-    e.preventDefault()
+  const handleSubmitCustomer = (customerData) => {
     if (currentId) {
       dispatch(updateCustomer(currentId, customerData, openSnackbar))
     } else {
       dispatch(createCustomer(customerData, openSnackbar))
     }
 
-    clear()
+    //    clear()
     handleClose()
   }
 
-  const clear = () => {
-    setCurrentId(null)
-    setCustomerData({ name: '', email: '', phone: '', address: '', userId: [] })
-  }
+  //  const clear = () => {
+  //    if (setCurrentId) {
+  //      setCurrentId(null)
+  //    }
+  //    // setCustomerData({ name: '', email: '', phone: '', address: '', userId: [] })
+  //  }
 
   const handleClose = () => {
     setOpen(false)
@@ -108,13 +127,13 @@ const AddCustomer = ({ setOpen, open, currentId, setCurrentId }) => {
 
   return (
     <div>
-      <form>
-        <Dialog
-          onClose={handleClose}
-          aria-labelledby="customized-dialog-title"
-          open={open}
-          fullWidth
-        >
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        fullWidth
+      >
+        <form style={styles.form} onSubmit={handleSubmit(handleSubmitCustomer)}>
           <DialogTitle
             id="customized-dialog-title"
             onClose={handleClose}
@@ -133,7 +152,110 @@ const AddCustomer = ({ setOpen, open, currentId, setCurrentId }) => {
             </IconButton>
           </DialogTitle>
           <DialogContent dividers>
-            <div className="customInputs">
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field, fieldState }) => {
+                  return (
+                    <TextField
+                      disabled={currentId !== undefined}
+                      sx={{ mt: 4, mb: 4 }}
+                      {...field}
+                      error={fieldState.error !== undefined}
+                      helperText={
+                        fieldState.error ? fieldState.error?.message : ''
+                      }
+                      variant="standard"
+                      label="Name"
+                    />
+                  )
+                }}
+                rules={{
+                  required: {
+                    message: 'This field can not be empty',
+                    value: true,
+                  },
+                }}
+              />
+
+              <Controller
+                name="email"
+                control={control}
+                render={({ field, fieldState }) => {
+                  return (
+                    <TextField
+                      sx={{ mb: 4 }}
+                      {...field}
+                      error={fieldState.error !== undefined}
+                      helperText={
+                        fieldState.error ? fieldState.error?.message : ''
+                      }
+                      variant="standard"
+                      label="Email"
+                    />
+                  )
+                }}
+                rules={{
+                  required: {
+                    message: 'This field can not be empty',
+                    value: true,
+                  },
+                }}
+              />
+
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field, fieldState }) => {
+                  return (
+                    <TextField
+                      sx={{ mb: 4 }}
+                      {...field}
+                      error={fieldState.error !== undefined}
+                      helperText={
+                        fieldState.error ? fieldState.error?.message : ''
+                      }
+                      variant="standard"
+                      label="Phone"
+                    />
+                  )
+                }}
+                rules={{
+                  required: {
+                    message: 'This field can not be empty',
+                    value: true,
+                  },
+                }}
+              />
+
+              <Controller
+                name="address"
+                control={control}
+                render={({ field, fieldState }) => {
+                  return (
+                    <TextField
+                      sx={{ mb: 4 }}
+                      {...field}
+                      error={fieldState.error !== undefined}
+                      helperText={
+                        fieldState.error ? fieldState.error?.message : ''
+                      }
+                      variant="standard"
+                      label="Address"
+                    />
+                  )
+                }}
+                rules={{
+                  required: {
+                    message: 'This field can not be empty',
+                    value: true,
+                  },
+                }}
+              />
+            </Box>
+
+            {/*<div className="customInputs">
               <input
                 placeholder="Name"
                 style={inputStyle}
@@ -177,15 +299,15 @@ const AddCustomer = ({ setOpen, open, currentId, setCurrentId }) => {
                 }
                 value={customerData.address}
               />
-            </div>
+            </div>*/}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleSubmitCustomer} variant="contained">
+            <Button type="submit" variant="contained">
               Save Customer
             </Button>
           </DialogActions>
-        </Dialog>
-      </form>
+        </form>
+      </Dialog>
     </div>
   )
 }

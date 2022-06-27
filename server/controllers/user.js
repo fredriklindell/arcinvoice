@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 
 dotenv.config()
 const SECRET = process.env.SECRET
@@ -11,14 +12,24 @@ const PORT = process.env.SMTP_PORT
 const USER = process.env.SMTP_USER
 const PASS = process.env.SMTP_PASS
 
-import User from '../models/UserModel.js'
+import UserModel from '../models/UserModel.js'
 import CompanyModel from '../models/CompanyModel.js'
+
+export const getUsers = async (_, res) => {
+  try {
+    const users = await UserModel.find()
+
+    res.status(200).json(users)
+  } catch (error) {
+    res.status(404).json({ message: error.message })
+  }
+}
 
 export const signin = async (req, res) => {
   const { email, password } = req.body //Coming from formData
 
   try {
-    const existingUser = await User.findOne({ email }).populate('company')
+    const existingUser = await UserModel.findOne({ email }).populate('company')
 
     if (!existingUser)
       return res.status(404).json({ message: "User doesn't exist" })
@@ -61,7 +72,7 @@ export const signup = async (req, res) => {
   const { email, password, confirmPassword, firstName, lastName } = req.body
 
   try {
-    const existingUser = await User.findOne({ email })
+    const existingUser = await UserModel.findOne({ email })
     const userProfile = await CompanyModel.findOne({
       user: existingUser?._id,
     })
@@ -74,7 +85,7 @@ export const signup = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12)
 
-    const result = await User.create({
+    const result = await UserModel.create({
       email,
       password: hashedPassword,
       name: `${firstName} ${lastName}`,
@@ -97,7 +108,7 @@ export const signup = async (req, res) => {
 
 //     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with this id found')
 
-//     const updatedUser = await User.findByIdAndUpdate(_id, formData, {new: true})
+//     const updatedUser = await UserModel.findByIdAndUpdate(_id, formData, {new: true})
 //     res.json(updatedUser)
 // }
 
@@ -122,7 +133,7 @@ export const forgotPassword = (req, res) => {
       console.log(err)
     }
     const token = buffer.toString('hex')
-    User.findOne({ email: email }).then((user) => {
+    UserModel.findOne({ email: email }).then((user) => {
       if (!user) {
         return res
           .status(422)
@@ -155,7 +166,7 @@ export const forgotPassword = (req, res) => {
 export const resetPassword = (req, res) => {
   const newPassword = req.body.password
   const sentToken = req.body.token
-  User.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
+  UserModel.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
     .then((user) => {
       if (!user) {
         return res.status(422).json({ error: 'Try again session expired' })
@@ -172,4 +183,22 @@ export const resetPassword = (req, res) => {
     .catch((err) => {
       console.log(err)
     })
+}
+
+export const updateUserName = async (req, res) => {
+  const { id: _id } = req.params
+  const { newUserName } = req.body
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send('No User with that id')
+
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    _id,
+    { name: newUserName, _id },
+    { new: true }
+  )
+
+  const returnCompany = await UserModel.findById(updatedUser._id)
+
+  res.json(returnCompany)
 }
