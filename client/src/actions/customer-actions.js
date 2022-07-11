@@ -35,9 +35,9 @@ export const getCustomersByCompany = (searchQuery) => async (dispatch) => {
   }
 }
 
-export const createCustomer = (client, openSnackbar) => async (dispatch) => {
+export const createCustomer = (customer, openSnackbar) => async (dispatch) => {
   try {
-    const { data } = await api.addCustomer(client)
+    const { data } = await api.addCustomer(customer)
     dispatch({ type: ADD_NEW_CUSTOMER, payload: data })
     openSnackbar('Customer added successfully')
   } catch (error) {

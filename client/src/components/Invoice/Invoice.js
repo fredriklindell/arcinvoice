@@ -38,7 +38,7 @@ import {
   updateInvoice,
 } from '../../actions/invoice-actions'
 import { getCustomersByCompany } from '../../actions/customer-actions'
-import { getCompanyByUser } from '../../actions/company-actions'
+// import { getCompanyByUser } from '../../actions/company-actions'
 // import AddCustomer from './AddCustomer'
 import AddCustomer from './../Customers/AddCustomer'
 import InvoiceType from './InvoiceType'
@@ -87,11 +87,10 @@ const Invoice = () => {
   const [status, setStatus] = useState('')
   const { id } = useParams()
   const { customers } = useSelector((state) => state.customers)
-  const { company } = useSelector((state) => state.companies)
   const { invoice } = useSelector((state) => state.invoices)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { user } = useSelector((state) => state?.auth)
+  const { user, company } = useSelector((state) => state?.auth)
 
   useEffect(() => {
     getTotalCount()
@@ -123,9 +122,9 @@ const Invoice = () => {
   }, [id])
 
   useEffect(() => {
-    //    dispatch(getCustomersByCompany({ search: user?._id || user?.googleId }))
+    dispatch(getCustomersByCompany({ search: company?._id }))
     // TODO: this should not be necessary
-    dispatch(getCompanyByUser({ search: user?._id || user?.googleId }))
+    // dispatch(getCompanyByUser({ search: user?._id || user?.googleId }))
     // eslint-disable-next-line
   }, [dispatch])
 
@@ -242,10 +241,11 @@ const Invoice = () => {
             rates: rates,
             currency: currency,
             dueDate: selectedDate,
-            invoiceNumber: `${invoiceData.invoiceNumber < 100
-              ? Number(invoiceData.invoiceNumber).toString().padStart(3, '0')
-              : Number(invoiceData.invoiceNumber)
-              }`,
+            invoiceNumber: `${
+              invoiceData.invoiceNumber < 100
+                ? Number(invoiceData.invoiceNumber).toString().padStart(3, '0')
+                : Number(invoiceData.invoiceNumber)
+            }`,
             customer,
             type: type,
             status: status,
@@ -515,7 +515,7 @@ const Invoice = () => {
                           (itemField.quantity *
                             itemField.unitPrice *
                             itemField.discount) /
-                          100
+                            100
                         }
                         disabled
                       />{' '}

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+// import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
@@ -21,9 +22,11 @@ import LastPageIcon from '@mui/icons-material/LastPage'
 import Container from '@mui/material/Container'
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
-import { useLocation } from 'react-router-dom'
 
-import { deleteInvoice, getInvoicesByUser } from '../../actions/invoice-actions'
+import {
+  deleteInvoice,
+  getInvoicesByCompany,
+} from '../../actions/invoice-actions'
 import NoData from '../svgIcons/NoData'
 import Spinner from '../Spinner/Spinner'
 import { useSnackbar } from 'react-simple-snackbar'
@@ -130,7 +133,7 @@ const Invoices = () => {
   const dispatch = useDispatch()
   const location = useLocation()
   const navigate = useNavigate()
-  const { user } = useSelector((state) => state?.auth)
+  const { company } = useSelector((state) => state?.auth)
   const { invoices } = useSelector((state) => state.invoices)
   const isLoading = useSelector((state) => state.invoices.isLoading)
   // eslint-disable-next-line
@@ -143,7 +146,7 @@ const Invoices = () => {
   // }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getInvoicesByUser({ search: user?._id || user?.googleId }))
+    dispatch(getInvoicesByCompany({ search: company?._id }))
     // eslint-disable-next-line
   }, [location])
 
@@ -151,7 +154,7 @@ const Invoices = () => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
-  const [page, setPage] = React.useState(0)
+  const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
   const handleChangePage = (event, newPage) => {
@@ -174,26 +177,26 @@ const Invoices = () => {
   function checkStatus(status) {
     return status === 'Partial'
       ? {
-        border: 'solid 0px #1976d2',
-        backgroundColor: '#baddff',
-        padding: '8px 18px',
-        borderRadius: '20px',
-      }
+          border: 'solid 0px #1976d2',
+          backgroundColor: '#baddff',
+          padding: '8px 18px',
+          borderRadius: '20px',
+        }
       : status === 'Paid'
-        ? {
+      ? {
           border: 'solid 0px green',
           backgroundColor: '#a5ffcd',
           padding: '8px 18px',
           borderRadius: '20px',
         }
-        : status === 'Unpaid'
-          ? {
-            border: 'solid 0px red',
-            backgroundColor: '#ffaa91',
-            padding: '8px 18px',
-            borderRadius: '20px',
-          }
-          : 'red'
+      : status === 'Unpaid'
+      ? {
+          border: 'solid 0px red',
+          backgroundColor: '#ffaa91',
+          padding: '8px 18px',
+          borderRadius: '20px',
+        }
+      : 'red'
   }
 
   if (isLoading) {

@@ -1,22 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { toCommas } from '../../utils/utils'
 import styles from './Dashboard.module.css'
-import { useLocation } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { getInvoicesByUser } from '../../actions/invoice-actions'
+import { useSelector } from 'react-redux'
 import Empty from '../svgIcons/Empty'
 import Chart from './Chart'
-// import Donut from './Donut'
 import moment from 'moment'
 import { Check, Pie, Bag, Card, Clock, Frown } from './Icons'
 import Spinner from '../Spinner/Spinner'
 
 const Dashboard = () => {
-  const location = useLocation()
-  const dispatch = useDispatch()
   const { invoices, isLoading } = useSelector((state) => state?.invoices)
-  const { companies } = useSelector((state) => state?.companies)
-  const { user } = useSelector((state) => state?.auth)
+//  const { companies } = useSelector((state) => state?.companies)
+//  const { user } = useSelector((state) => state?.auth)
   // const unpaid = invoices?.filter((invoice) => (invoice.status === 'Unpaid') || (invoice.status === 'Partial'))
   const overDue = invoices?.filter(
     (invoice) => invoice.dueDate <= new Date().toISOString()
@@ -49,15 +44,6 @@ const Dashboard = () => {
   for (let i = 0; i < invoices.length; i++) {
     totalAmount += invoices[i].total
   }
-
-  useEffect(() => {
-    dispatch(
-      getInvoicesByUser({
-        search: user?._id || user?.googleId,
-      })
-    )
-    // eslint-disable-next-line
-  }, [location, dispatch])
 
   const unpaidInvoice = invoices?.filter(
     (invoice) => invoice.status === 'Unpaid'

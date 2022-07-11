@@ -113,7 +113,7 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 }
 
-const Customers = ({ setOpen, setCurrentId }) => {
+const Customers = ({ setOpen, setCurrentCustomer }) => {
   const { customers } = useSelector((state) => state.customers)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -131,9 +131,9 @@ const Customers = ({ setOpen, setCurrentId }) => {
     setPage(0)
   }
 
-  const handleEdit = (selectedInvoice) => {
+  const handleEdit = (selectedCustomer) => {
     setOpen((prevState) => !prevState)
-    setCurrentId(selectedInvoice)
+    setCurrentCustomer(selectedCustomer)
   }
 
   const tableStyle = {
@@ -180,10 +180,7 @@ const Customers = ({ setOpen, setCurrentId }) => {
                   <TableCell sx={tableStyle}>{row.email}</TableCell>
                   <TableCell sx={tableStyle}>{row.phone}</TableCell>
                   <TableCell sx={{ ...tableStyle, width: '10px' }}>
-                    <IconButton
-                      onClick={() => handleEdit(row._id)}
-                      size="large"
-                    >
+                    <IconButton onClick={() => handleEdit(row)} size="large">
                       <BorderColorIcon sx={{ width: '20px', height: '20px' }} />
                     </IconButton>
                   </TableCell>

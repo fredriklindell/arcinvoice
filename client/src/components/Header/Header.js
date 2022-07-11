@@ -51,7 +51,6 @@ const Header = () => {
   }
 
   const handleSetDefaultCompany = (company) => {
-    console.log('Header: handleSetDefaultCompany: company', company);
     dispatch(setDefaultCompany(company._id))
   }
 

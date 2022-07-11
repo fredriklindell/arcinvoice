@@ -8,6 +8,8 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_COMPANY,
+  FETCH_CUSTOMERS_BY_COMPANY,
+  FETCH_INVOICES_BY_COMPANY,
 } from './constants'
 import * as api from '../api/index.js'
 
@@ -105,6 +107,19 @@ export const setDefaultCompany = (id) => async (dispatch) => {
     const { data } = await api.setDefaultCompany(id)
 
     dispatch({ type: UPDATE_COMPANY, payload: data })
+
+    const {
+      data: { data: customers },
+    } = await api.fetchCustomersByCompany({ search: data._id })
+
+    dispatch({ type: FETCH_CUSTOMERS_BY_COMPANY, payload: customers })
+
+    const {
+      data: { data: invoices },
+    } = await api.fetchInvoicesByCompany({ search: data._id })
+
+    dispatch({ type: FETCH_INVOICES_BY_COMPANY, payload: invoices })
+
     // TODO: fetch customers by company
   } catch (error) {
     console.log(error)

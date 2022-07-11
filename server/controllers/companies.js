@@ -25,35 +25,14 @@ export const getCompany = async (req, res) => {
 }
 
 export const createCompany = async (req, res) => {
-  //  const {
-  //    name,
-  //    email,
-  //    phoneNumber,
-  //    businessName,
-  //    contactAddress,
-  //    businessRegistrationNumber,
-  //    logo,
-  //    website,
-  //    user,
-  //  } = req.body
   const company = req.body
 
   const newCompany = new CompanyModel({
     ...company,
+    createdBy: company.users[0], // TODO: does this work
     createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   })
-  //  const newCompany = new CompanyModel({
-  //    name,
-  //    email,
-  //    phoneNumber,
-  //    businessName,
-  //    contactAddress,
-  //    businessRegistrationNumber,
-  //    logo,
-  //    website,
-  //    user,
-  //    createdAt: new Date().toISOString(),
-  //  })
 
   try {
     const existingCompany = await CompanyModel.findOne({
@@ -131,7 +110,11 @@ export const updateCompany = async (req, res) => {
 
   const updatedCompany = await CompanyModel.findByIdAndUpdate(
     _id,
-    { ...company, _id },
+    {
+      ...company,
+      updatedAt: new Date().toISOString(),
+      _id,
+    },
     { new: true }
   )
 

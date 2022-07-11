@@ -60,11 +60,18 @@ const CompanySchema = new mongoose.Schema({
     },
   ],
   isDefault: Boolean,
-  // TODO: fix below
-  //  createdBy: {
-  //    type: mongoose.Schema.Types.ObjectId,
-  //    ref: 'User',
-  //  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 })
 
 const CompanyModel = mongoose.model('Company', CompanySchema)

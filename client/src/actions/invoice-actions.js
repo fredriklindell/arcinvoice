@@ -5,7 +5,7 @@ import {
   UPDATE,
   DELETE,
   GET_INVOICE,
-  FETCH_INVOICE_BY_USER,
+  FETCH_INVOICES_BY_COMPANY,
   START_LOADING,
   END_LOADING,
 } from './constants'
@@ -19,13 +19,13 @@ import {
 //     }
 // }
 
-export const getInvoicesByUser = (searchQuery) => async (dispatch) => {
+export const getInvoicesByCompany = (searchQuery) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING })
     const {
       data: { data },
-    } = await api.fetchInvoicesByUser(searchQuery)
-    dispatch({ type: FETCH_INVOICE_BY_USER, payload: data })
+    } = await api.fetchInvoicesByCompany(searchQuery)
+    dispatch({ type: FETCH_INVOICES_BY_COMPANY, payload: data })
     dispatch({ type: END_LOADING })
   } catch (error) {
     console.log(error.response)

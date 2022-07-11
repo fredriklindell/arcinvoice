@@ -3,15 +3,17 @@ import mongoose from 'mongoose'
 const InvoiceSchema = new mongoose.Schema({
   dueDate: Date,
   currency: String,
-  articles: [{
-    artcileNumber: Number,
-    articleName: String,
-    vat: Number,
-    unit: String,
-    unitPrice: String,
-    quantity: String,
-    discount: String
-  }],
+  articles: [
+    {
+      artcileNumber: Number,
+      articleName: String,
+      vat: Number,
+      unit: String,
+      unitPrice: String,
+      quantity: String,
+      discount: String,
+    },
+  ],
   rates: String,
   total: Number,
   subTotal: Number,
@@ -21,21 +23,31 @@ const InvoiceSchema = new mongoose.Schema({
   type: String,
   company: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Company'
+    ref: 'Company',
   },
   totalAmountReceived: Number,
   client: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client'
+    ref: 'Client',
   },
-  payments: [{
+  payments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Payment',
+    },
+  ],
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Payment'
-  }],
+    ref: 'User',
+  },
   createdAt: {
     type: Date,
-    default: new Date()
-  }
+    default: new Date(),
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 })
 
 const InvoiceModel = mongoose.model('Invoice', InvoiceSchema)

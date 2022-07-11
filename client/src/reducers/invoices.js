@@ -1,5 +1,5 @@
 
-import { FETCH_ALL, ADD_NEW, UPDATE, DELETE, GET_INVOICE, START_LOADING, END_LOADING, FETCH_INVOICE_BY_USER } from '../actions/constants'
+import { FETCH_ALL, ADD_NEW, UPDATE, DELETE, GET_INVOICE, START_LOADING, END_LOADING, FETCH_INVOICES_BY_COMPANY } from '../actions/constants'
 
 const invoices = (state = { isLoading: true, invoices: [] }, action) => {
     switch (action.type) {
@@ -14,7 +14,7 @@ const invoices = (state = { isLoading: true, invoices: [] }, action) => {
           currentPage: action.payload.currentPage,
           numberOfPages: action.payload.numberOfPages,
         };
-      case FETCH_INVOICE_BY_USER:
+      case FETCH_INVOICES_BY_COMPANY:
         return { ...state, invoices: action.payload };
 
       case GET_INVOICE:

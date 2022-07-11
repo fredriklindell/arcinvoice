@@ -42,6 +42,7 @@ export const getCustomers = async (req, res) => {
       .sort({ _id: -1 })
       .limit(LIMIT)
       .skip(startIndex)
+      .populate('company')
 
     res.json({
       data: clients,
@@ -62,7 +63,7 @@ export const createCustomer = async (req, res) => {
   })
 
   try {
-    await newClient.save()
+    await newClient.save().populate('company')
     res.status(201).json(newClient)
   } catch (error) {
     res.status(409).json(error.message)
@@ -80,7 +81,7 @@ export const updateCustomer = async (req, res) => {
     _id,
     { ...customer, _id },
     { new: true }
-  )
+  ).populate('company')
 
   res.json(updatedCustomer)
 }
@@ -100,7 +101,9 @@ export const getCustomersByCompany = async (req, res) => {
   const { searchQuery } = req.query
 
   try {
-    const customers = await CustomerModel.find({ company: searchQuery })
+    const customers = await CustomerModel.find({
+      company: searchQuery,
+    }).populate('company')
 
     res.json({ data: customers })
   } catch (error) {

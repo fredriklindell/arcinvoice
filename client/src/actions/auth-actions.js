@@ -1,5 +1,10 @@
 import * as api from '../api/index'
-import { AUTH, FETCH_COMPANIES_BY_USER } from './constants'
+import {
+  AUTH,
+  FETCH_COMPANIES_BY_USER,
+  FETCH_CUSTOMERS_BY_COMPANY,
+  FETCH_INVOICES_BY_COMPANY,
+} from './constants'
 
 export const signin =
   (formData, openSnackbar, setLoading, navigate) => async (dispatch) => {
@@ -19,6 +24,18 @@ export const signin =
         type: FETCH_COMPANIES_BY_USER,
         payload: companies,
       })
+
+      const {
+        data: { data: customers },
+      } = await api.fetchCustomersByCompany({ search: user?.company?._id })
+
+      dispatch({ type: FETCH_CUSTOMERS_BY_COMPANY, payload: customers })
+
+      const {
+        data: { data: invoices },
+      } = await api.fetchInvoicesByCompany({ search: user?.company?._id })
+
+      dispatch({ type: FETCH_INVOICES_BY_COMPANY, payload: invoices })
 
       // setLoading(false)
       openSnackbar('Signin successfull')

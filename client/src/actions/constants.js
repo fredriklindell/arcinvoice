@@ -3,7 +3,7 @@ export const ADD_NEW = 'ADD_NEW'
 export const UPDATE = 'UPDATE'
 export const DELETE = 'DELETE'
 export const GET_INVOICE = 'GET_INVOICE'
-export const FETCH_INVOICE_BY_USER = 'FETCH_INVOICE_BY_USER'
+export const FETCH_INVOICES_BY_COMPANY = 'FETCH_INVOICES_BY_COMPANY'
 
 export const ALL_CUSTOMERS = 'ALL_CUSTOMERS'
 export const UPDATE_CUSTOMER = 'UPDATE_CUSTOMER'

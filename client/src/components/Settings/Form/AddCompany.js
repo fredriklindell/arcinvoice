@@ -1,6 +1,4 @@
 /* eslint-disable */
-import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import {
   Autocomplete,
@@ -157,24 +155,6 @@ const AddCompany = ({ setOpen, open, currentCompany, setCurrentCompany }) => {
     // setOpen(false)
     setOpen(null)
   }
-
-  //  const inputStyle = {
-  //    display: 'block',
-  //    padding: '1.4rem 0.75rem',
-  //    width: '100%',
-  //    fontSize: '0.8rem',
-  //    lineHeight: 1.25,
-  //    color: '#55595c',
-  //    backgroundColor: '#fff',
-  //    backgroundImage: 'none',
-  //    backgroundClip: 'padding-box',
-  //    borderTop: '0',
-  //    borderRight: '0',
-  //    borderBottom: '1px solid #eee',
-  //    borderLeft: '0',
-  //    borderRadius: '3px',
-  //    transition: 'all 0.25s cubic-bezier(0.4, 0, 1, 1)',
-  //  }
 
   return (
     <Dialog

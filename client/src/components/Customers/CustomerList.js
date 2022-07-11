@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Customers from './Customers'
 import AddCustomer from './AddCustomer'
 import { getCustomersByCompany } from '../../actions/customer-actions'
@@ -11,13 +11,13 @@ import Spinner from '../Spinner/Spinner'
 const CustomerList = () => {
   const location = useLocation()
   const [open, setOpen] = useState(false)
-  const [currentId, setCurrentId] = useState(null)
+  const [currentCustomer, setCurrentCustomer] = useState(null)
   const dispatch = useDispatch()
   const { customers, isLoading } = useSelector((state) => state.customers)
-  const { user } = useSelector((state) => state?.auth)
+  const { company } = useSelector((state) => state?.auth)
 
   useEffect(() => {
-    dispatch(getCustomersByCompany({ search: user?._id || user?.googleId }))
+    dispatch(getCustomersByCompany({ search: company?._id }))
   }, [location, dispatch])
 
   if (isLoading) {
@@ -58,17 +58,20 @@ const CustomerList = () => {
 
   return (
     <div>
-      <AddCustomer
-        open={open}
-        setOpen={setOpen}
-        currentId={currentId}
-        setCurrentId={setCurrentId}
-      />
+        {currentCustomer !== null ? (
+          <AddCustomer
+            open={open}
+            setOpen={setOpen}
+            currentCustomer={currentCustomer}
+            setCurrentCustomer={setCurrentCustomer}
+          />
+        ) : null}
+
       <Customers
         open={open}
         setOpen={setOpen}
-        currentId={currentId}
-        setCurrentId={setCurrentId}
+        currentCustomer={currentCustomer}
+        setCurrentCustomer={setCurrentCustomer}
       />
     </div>
   )

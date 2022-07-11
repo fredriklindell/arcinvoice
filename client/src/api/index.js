@@ -19,7 +19,7 @@ export const addInvoice = (invoice) => API.post('/invoices', invoice)
 export const updateInvoice = (id, updatedInvoice) =>
   API.patch(`/invoices/${id}`, updatedInvoice)
 export const deleteInvoice = (id) => API.delete(`/invoices/${id}`)
-export const fetchInvoicesByUser = (searchQuery) =>
+export const fetchInvoicesByCompany = (searchQuery) =>
   API.get(`/invoices?searchQuery=${searchQuery.search}`)
 
 export const fetchCustomer = (id) => API.get(`/customers/${id}`)
