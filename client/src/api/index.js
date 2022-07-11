@@ -35,7 +35,8 @@ export const signIn = (formData) => API.post('/users/signin', formData)
 export const signUp = (formData) => API.post('/users/signup', formData)
 export const forgot = (formData) => API.post('/users/forgot', formData)
 export const reset = (formData) => API.post('/users/reset', formData)
-export const updateUserName = (id, newUserName) => API.patch(`/users/${id}`, { newUserName })
+export const updateUserName = (id, newUserName) =>
+  API.patch(`/users/${id}`, { newUserName })
 
 export const fetchCompaniesBySearch = (searchQuery) =>
   API.get(
@@ -52,6 +53,8 @@ export const fetchCompanyByUser = (searchQuery) =>
 export const createCompany = (newProfile) => API.post('/companies', newProfile)
 export const updateCompany = (id, updatedCompany) =>
   API.patch(`/companies/${id}`, updatedCompany)
+export const setDefaultCompany = (id) =>
+  API.patch(`/companies/default/${id}`)
 export const deleteCompany = (id) => API.delete(`/companies/${id}`)
 
 export const fetchUsers = () => API.get(`/users`)

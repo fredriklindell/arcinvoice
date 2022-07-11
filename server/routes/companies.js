@@ -6,6 +6,7 @@ import {
   getCompany,
   getCompaniesByUser,
   getCompanyByUser,
+  setDefaultCompany,
 } from '../controllers/companies.js'
 
 const router = express.Router()
@@ -15,6 +16,7 @@ router.get('/', getCompaniesByUser)
 router.get('/user/', getCompanyByUser)
 router.get('/:id', getCompany)
 router.patch('/:id', updateCompany)
+router.patch('/default/:id', setDefaultCompany)
 router.delete('/:id', deleteCompany)
 
 export default router

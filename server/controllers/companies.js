@@ -142,6 +142,26 @@ export const updateCompany = async (req, res) => {
   res.json(returnCompany)
 }
 
+export const setDefaultCompany = async (req, res) => {
+  const { id: _id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return res.status(404).send('No company with that id')
+
+  await CompanyModel.updateMany({}, { isDefault: false })
+  const updatedCompany = await CompanyModel.findByIdAndUpdate(
+    _id,
+    { isDefault: true, _id },
+    { new: true }
+  )
+
+  const returnCompany = await CompanyModel.findById(
+    updatedCompany._id
+  ).populate('users')
+
+  res.json(returnCompany)
+}
+
 export const deleteCompany = async (req, res) => {
   const { id } = req.params
 

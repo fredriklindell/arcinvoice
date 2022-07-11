@@ -42,15 +42,9 @@ export const signin = async (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json({ message: 'Invalid credentials' })
 
-    //    const userCompany = await CompanyModel.findOne({
-    //      user: existingUser?._id,
-    //    })
-    //
-    //    if (!existingUser && userCompany) {
-    //      // get userprofile and append to login auth detail
-    //      existingUser.company = userCompany._id
-    //      await existingUser.save()
-    //    }
+    const userCompany = await CompanyModel.findOne({
+      user: existingUser?._id,
+    })
 
     //If crednetials are valid, create a token for the user
     const token = jwt.sign(
@@ -61,8 +55,7 @@ export const signin = async (req, res) => {
     console.log(token)
 
     //Then send the token to the client/frontend
-    //    res.status(200).json({ result: existingUser, userCompany, token })
-    res.status(200).json({ result: existingUser, token })
+    res.status(200).json({ user: existingUser, company: userCompany, token })
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong' })
   }
@@ -73,9 +66,6 @@ export const signup = async (req, res) => {
 
   try {
     const existingUser = await UserModel.findOne({ email })
-    const userProfile = await CompanyModel.findOne({
-      user: existingUser?._id,
-    })
 
     if (existingUser)
       return res.status(400).json({ message: 'User already exist' })
@@ -95,22 +85,11 @@ export const signup = async (req, res) => {
       expiresIn: '1h',
     })
 
-    res.status(200).json({ result, userProfile, token })
+    res.status(200).json({ user: result, company: null, token })
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong' })
   }
 }
-
-// export const updateProfile = async (req, res) => {
-//     const formData = req.body
-//     const { id: _id } = req.params
-//     console.log(formData)
-
-//     if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send('No user with this id found')
-
-//     const updatedUser = await UserModel.findByIdAndUpdate(_id, formData, {new: true})
-//     res.json(updatedUser)
-// }
 
 export const forgotPassword = (req, res) => {
   const { email } = req.body

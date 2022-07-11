@@ -11,7 +11,11 @@ import {
 } from '../actions/constants'
 
 const companiesReducer = (
-  state = { isLoading: true, companies: [], company: null },
+  state = {
+    isLoading: true,
+    companies: [],
+    company: null,
+  },
   action
 ) => {
   switch (action.type) {

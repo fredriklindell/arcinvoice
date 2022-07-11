@@ -13,7 +13,7 @@ export const signin =
       const {
         data: { data: companies },
       } = await api.fetchCompaniesByUser({
-        search: user?.result?._id || user?.result?.googleId,
+        search: user?.user?._id || user?.user?.googleId,
       })
       dispatch({
         type: FETCH_COMPANIES_BY_USER,

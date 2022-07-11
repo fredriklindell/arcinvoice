@@ -1,12 +1,11 @@
-import { AUTH, LOGOUT, UPDATE_USER } from '../actions/constants'
+import { AUTH, LOGOUT, UPDATE_USER, UPDATE_COMPANY } from '../actions/constants'
 
 const profileData = JSON.parse(localStorage.getItem('profile'))
 
 const initialState = {
-  authData: profileData,
   token: profileData?.token,
-  profile: profileData?.userProfile,
-  user: profileData?.result,
+  user: profileData?.user,
+  company: profileData?.company,
 }
 
 const authReducer = (state = initialState, action) => {
@@ -15,32 +14,43 @@ const authReducer = (state = initialState, action) => {
       localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
       return {
         ...state,
-        authData: action?.data,
         token: action?.data?.token,
-        user: action?.data?.result,
-        profile: action?.data?.userProfile,
+        user: action?.data?.user,
+        company: action?.data?.company,
       }
 
     case LOGOUT:
       localStorage.removeItem('profile')
       return {
         ...state,
-        authData: null,
         token: null,
         user: null,
-        profile: null,
       }
 
     case UPDATE_USER:
       const currentStoredProfile = JSON.parse(localStorage.getItem('profile'))
       localStorage.setItem(
         'profile',
-        JSON.stringify({ ...currentStoredProfile, result: action?.payload })
+        JSON.stringify({ ...currentStoredProfile, user: action?.payload })
       )
       return {
         ...state,
         user: action?.payload,
       }
+
+    case UPDATE_COMPANY:
+      if (action?.payload.isDefault) {
+        const currentStoredProfile = JSON.parse(localStorage.getItem('profile'))
+        localStorage.setItem(
+          'profile',
+          JSON.stringify({ ...currentStoredProfile, company: action?.payload })
+        )
+        return {
+          ...state,
+          company: action?.payload,
+        }
+      }
+      return state
 
     default:
       return state

@@ -59,6 +59,8 @@ const CompanySchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
+  isDefault: Boolean,
+  // TODO: fix below
   //  createdBy: {
   //    type: mongoose.Schema.Types.ObjectId,
   //    ref: 'User',

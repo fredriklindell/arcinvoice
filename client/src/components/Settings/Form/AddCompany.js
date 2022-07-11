@@ -115,6 +115,7 @@ const AddCompany = ({ setOpen, open, currentCompany, setCurrentCompany }) => {
       termsOfPaymentDays: company?.termsOfPaymentDays || '',
       references: company?.references || [], // TODO: Fix
       users: company?.users || [user] || [], // TODO: send whole user or only userId?
+      isDefault: company?.isDefault || false,
     },
   })
 

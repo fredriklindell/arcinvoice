@@ -100,6 +100,17 @@ export const updateCompany = (id, form, openSnackbar) => async (dispatch) => {
   }
 }
 
+export const setDefaultCompany = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.setDefaultCompany(id)
+
+    dispatch({ type: UPDATE_COMPANY, payload: data })
+    // TODO: fetch customers by company
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const deleteCompany = (id) => async (dispatch) => {
   try {
     await api.deleteCompany(id)
