@@ -6,9 +6,10 @@
     border-bottom: 1px solid rgb(218, 218, 218);
     /* margin-right: 30px; */
     /* background-color: #1976d2; */
-    /* background-color: #ffffff; */
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
   }
-
 
   .header2 {
     display: flex;
